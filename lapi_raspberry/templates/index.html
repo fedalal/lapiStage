@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <title>Lapi team robot control</title>
+        <script src="/static/jquery-2.1.0.min.js"></script>
+    </head>
+
+    <body>
+        <p style="text-align: center;">Настройка роботов команды Lapi г. Мурманск</p>
+        <p style="text-align: center;">&nbsp;</p>
+        <table style="height: 180px; margin-left: auto; margin-right: auto; text-align: center" >
+        <tbody>
+        <tr style="height: 38px;">
+        <td style="width: 20%; height: 38px;"> <button onclick="clickedOp('clock','init')" id="clock_init">Инициализация</button></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<button onclick="clickedOp('case','init')" id="case_init">Инициализация</button></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<button onclick="clickedOp('lamp','init')" id="case_init">Инициализация</button></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<button onclick="clickedOp('cup','init')" id="case_init">Инициализация</button></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<button onclick="clickedOp('cleaner','init')" id="case_init">Инициализация</button></td>
+        </tr>
+        <tr style="height: 38px;">
+        <td style="width: 20%; height: 38px;"><p id="clock_status"></p> </td>
+        <td style="width: 20%; height: 38px;"><p id="case_status"></p></td>
+        <td style="width: 20%; height: 38px;"><p id="lamp_status"></p></td>
+        <td style="width: 20%; height: 38px;"><p id="cup_status"></p></td>
+        <td style="width: 20%; height: 38px;"><p id="clean_status"></p></td>
+        </tr>
+        <tr style="height: 38px;">
+        <td style="width: 20%; height: 38px;"><img src="/static/images/clock.png" alt="Будильник"></td>
+        <td style="width: 20%; height: 38px;"><img src="/static/images/case.png" alt="Шкаф"></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<img src="/static/images/lamp.png" alt="Светильник"></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<img src="/static/images/cup.png" alt="Чашка"></td>
+        <td style="width: 20%; height: 38px;">&nbsp;<img src="/static/images/clean.png" alt="Метла"></td>
+        </tr>
+        <tr style="height: 38px;">
+        <td style="width: 20%; height: 38px;">
+            <p>
+                <button onclick="clickedOp('clock','hello')" id="clock_hello">Приветствие</button>
+            </p>
+            <p>
+                <button onclick="clickedOp('clock','head_rotate')" id="clock_head">Поворот головы</button>
+            </p>
+            <p>
+                <button onclick="clickedOp('clock','headomg')" id="clock_headomg">Ого</button>
+            </p>
+            <p>
+                <button onclick="clickedOp('clock','fly')" id="clock_fly">Лети птичка</button>
+            </p>
+        </td>
+        <td style="width: 20%; height: 38px;">
+                    <p>
+                <button onclick="clickedOp('case','open')" id="case_open">Открыть</button>
+            </p>
+            <p>
+                <button onclick="clickedOp('case','close')" id="case_close">Закрыть</button>
+            </p>
+        </td>
+        <td style="width: 20%; height: 38px;">
+        <p>
+                <button onclick="clickedOp('lamp','bow')" id="lamp_bow">Поклониться</button>
+            </p>
+        <p>
+                <button onclick="clickedOp('lamp','fly')" id="lamp_fly">Лети птичка</button>
+            </p>
+        <p>
+                <button onclick="clickedOp('lamp','tease')" id="lamp_tease">Дразнить</button>
+            </p>
+        </td>
+        <td style="width: 20%; height: 38px;">
+        <p>
+                <button onclick="clickedOp('cup','tea')" id="cup_tea">Время пить чай</button>
+            </p>
+        </td>
+        <td style="width: 20%; height: 38px;">
+        <p>
+                <button onclick="clickedOp('cleaner','clean')" id="cleaner_clean">Время уборки</button>
+            </p>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    </body>
+</html>
+<script>
+    function clickedOp(device_id, op)
+        {
+            $.ajax({url:'/' + device_id + '/' + op});
+        }
+
+    {#Обновление статуса устройств каждую секунду#}
+    setInterval(function(){
+        fetch('/status')
+        .then((response) => {
+            return response.json();
+        })
+        .then((myjson) => {
+             $("#clock_status").text(myjson['clock_status']);
+             $("#case_status").text(myjson['case_status']);
+             $("#lamp_status").text(myjson['lamp_status']);
+             $("#cup_status").text(myjson['cup_status']);
+             $("#clean_status").text(myjson['clean_status']);
+        });
+    }, 1000);
+
+</script>
